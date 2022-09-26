@@ -1,6 +1,6 @@
 import aiohttp
 import configparser
-from os import getcwd
+from datetime import datetime
 from pathlib import Path
 class Auth:
     def __init__(self, config_file_path=None, client_id=None, client_secret=None) -> None:
@@ -20,15 +20,27 @@ class Auth:
             if self.client_id is None and self.client_secret is None:
                 if config_file.is_file():
                     config.read(config_file)
-                    async with session.post(self.token_url, headers=self.headers, data={
+                    if config.has_section("TOKEN"):
+                        now = datetime.utcnow().timestamp()
+                        if not now - float(config.get("TOKEN", "ISSUED_AT")) >= 3599:
+                            return config.get("TOKEN", "ACCESS_TOKEN")
+                    else:
+                        async with session.post(self.token_url, headers=self.headers, data={
                         "grant_type": "client_credentials",
                         "client_id": config.get("CREDENTIALS", "CLIENT_ID"),
                         "client_secret": config.get("CREDENTIALS", "CLIENT_SECRET")
-                    }) as response:
-                        if response.status == 200:
-                            return await response.json()
-                        else:
-                            return {"error": await response.json()}
+                        }) as response:
+                            if response.status == 200:
+                                access_token = await response.json()
+                                if not config.has_section("TOKEN"):
+                                    config.add_section("TOKEN")
+                                config['TOKEN']['ISSUED_AT'] = str(datetime.utcnow().timestamp())
+                                config['TOKEN']['ACCESS_TOKEN'] = access_token['access_token']
+                                with open(config_file, "w") as configfile:
+                                    config.write(configfile)
+                                return access_token['access_token']
+                            else:
+                                return {"error": await response.json()}
             else:
                 async with session.post(self.token_url, headers=self.headers, data={
                 "grant_type": "client_credentials",
@@ -36,7 +48,8 @@ class Auth:
                 "client_secret": self.client_secret
             }) as response:
                     if response.status == 200:
-                        return await response.json()
+                        access_token = await response.json()
+                        return access_token['access_token']
                     else:
                         return {"error": await response.json()}
 
