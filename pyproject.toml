@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lexmachina"
+version = "0.0.1"
+authors = [
+  { name="LexMachina", email="author@example.com" },
+]
+description = "LexMachina API python sdk"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = ['aiohttp >= 3.8.3']
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache-2.0",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/LexMachinaInc/python-lexmachina-api-client"
+"Bug Tracker" = "https://github.com/LexMachinaInc/python-lexmachina-api-client/issues"

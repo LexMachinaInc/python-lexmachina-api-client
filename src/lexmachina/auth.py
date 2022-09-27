@@ -24,23 +24,10 @@ class Auth:
                         now = datetime.utcnow().timestamp()
                         if not now - float(config.get("TOKEN", "ISSUED_AT")) >= 3599:
                             return config.get("TOKEN", "ACCESS_TOKEN")
+                        else:
+                            return await self.renew_token(config, config_file, session)
                     else:
-                        async with session.post(self.token_url, headers=self.headers, data={
-                        "grant_type": "client_credentials",
-                        "client_id": config.get("CREDENTIALS", "CLIENT_ID"),
-                        "client_secret": config.get("CREDENTIALS", "CLIENT_SECRET")
-                        }) as response:
-                            if response.status == 200:
-                                access_token = await response.json()
-                                if not config.has_section("TOKEN"):
-                                    config.add_section("TOKEN")
-                                config['TOKEN']['ISSUED_AT'] = str(datetime.utcnow().timestamp())
-                                config['TOKEN']['ACCESS_TOKEN'] = access_token['access_token']
-                                with open(config_file, "w") as configfile:
-                                    config.write(configfile)
-                                return access_token['access_token']
-                            else:
-                                return {"error": await response.json()}
+                        return await self.renew_token(config, config_file, session)
             else:
                 async with session.post(self.token_url, headers=self.headers, data={
                 "grant_type": "client_credentials",
@@ -52,6 +39,24 @@ class Auth:
                         return access_token['access_token']
                     else:
                         return {"error": await response.json()}
+
+    async def renew_token(self, config, config_file, session):
+        async with session.post(self.token_url, headers=self.headers, data={
+            "grant_type": "client_credentials",
+            "client_id": config.get("CREDENTIALS", "client_id"),
+            "client_secret": config.get("CREDENTIALS", "client_secret")
+        }) as response:
+            if response.status == 200:
+                access_token = await response.json()
+                if not config.has_section("TOKEN"):
+                    config.add_section("TOKEN")
+                config['TOKEN']['ISSUED_AT'] = str(datetime.utcnow().timestamp())
+                config['TOKEN']['ACCESS_TOKEN'] = access_token['access_token']
+                with open(config_file, "w") as configfile:
+                    config.write(configfile)
+                return access_token['access_token']
+            else:
+                return {"error": await response.json()}
 
 
 

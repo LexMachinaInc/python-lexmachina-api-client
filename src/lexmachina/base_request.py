@@ -1,4 +1,3 @@
-import configparser
 import json
 
 import aiohttp
@@ -11,7 +10,11 @@ class BaseRequest(Auth):
         async with aiohttp.ClientSession() as session:
             token = await self.get_token()
             headers = {"Authorization": f"Bearer {token}"}
-            async with session.get(f"https://api.lexmachina.com/{version}/{path}/{args}", headers=headers,
+            if args is None:
+                url = f"https://api.lexmachina.com/{version}/{path}"
+            else:
+                url = f"https://api.lexmachina.com/{version}/{path}/{args}"
+            async with session.get(url, headers=headers,
                                    params=params) as response:
                 return await response.json()
 
