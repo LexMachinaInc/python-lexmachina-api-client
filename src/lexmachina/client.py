@@ -1,5 +1,5 @@
 import json
-
+from typing import Union
 from lexmachina.base_request import BaseRequest
 
 
@@ -26,7 +26,7 @@ class LexMachinaClient(BaseRequest):
             response = await self.get(path='parties', args=parties)
             return response
 
-    async def search_parties(self, q: str, page_number: int, page_size: int):
+    async def search_parties(self, q: str, page_number: int = 1, page_size: int = 500):
         response = await self.get(path='search-parties', params={"q": q,
                                                                  "pageNumber": page_number,
                                                                  "pageSize": page_size})
@@ -40,7 +40,7 @@ class LexMachinaClient(BaseRequest):
             response = await self.get(path='attorneys', args=attorneys)
             return response
 
-    async def search_attorneys(self, q: str, page_number: int, page_size: int):
+    async def search_attorneys(self, q: str, page_number: int = 1, page_size: int = 500):
         response = await self.get(path='search-attorneys', params={"q": q,
                                                                    "pageNumber": page_number,
                                                                    "pageSize": page_size})
@@ -54,7 +54,7 @@ class LexMachinaClient(BaseRequest):
             response = await self.get(path='law-firms', args=law_firms)
             return response
 
-    async def search_law_firms(self, q: str, page_number: int, page_size: int):
+    async def search_law_firms(self, q: str, page_number: int = 1, page_size: int = 500):
         response = await self.get(path='search-law-firms', params={"q": q,
                                                                    "pageNumber": page_number,
                                                                    "pageSize": page_size})
@@ -73,7 +73,7 @@ class LexMachinaClient(BaseRequest):
         return response
 
     async def search_judges(self, q: str):
-        response = await self.get(path='search-judges', params={"q": q})
+        response = await self.search(path='search-judges', q=q)
         return response
 
     async def get_patents(self, patents: list[str]):
@@ -85,29 +85,36 @@ class LexMachinaClient(BaseRequest):
             return response
 
     async def list_case_resolutions(self):
-        response = await self.get(path='list-case-resolutions')
+        response = await self.list(path='list-case-resolutions')
         return response
 
     async def list_case_tags(self):
-        response = await self.get(path='list-case-tags')
+        response = await self.list(path='list-case-tags')
         return response
 
     async def list_case_types(self):
-        response = await self.get(path='list-case-types')
+        response = await self.list(path='list-case-types')
         return response
 
     async def list_courts(self):
-        response = await self.get(path='list-courts')
+        response = await self.list(path='list-courts')
         return response
 
     async def list_damages(self):
-        response = await self.get(path='list-damages')
+        response = await self.list(path='list-damages')
         return response
 
     async def list_events(self):
-        response = await self.get(path='list-events')
+        response = await self.list(path='list-events')
         return response
 
     async def list_judgment_sources(self):
-        response = await self.get(path='list-judgment_sources')
+        response = await self.list(path='list-judgment_sources')
+        return response
+
+    async def list(self, path):
+        response = await self.get(path=path)
+        return response
+    async def health(self):
+        response = await self.get(path="health")
         return response

@@ -57,9 +57,3 @@ class Auth:
                 return access_token['access_token']
             else:
                 return {"error": await response.json()}
-
-
-
-
-    
-
