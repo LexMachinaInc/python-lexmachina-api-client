@@ -73,7 +73,7 @@ class LexMachinaClient(BaseRequest):
         return response
 
     async def search_judges(self, q: str):
-        response = await self.search(path='search-judges', q=q)
+        response = await self.get(path='search-judges', params={"q": q})
         return response
 
     async def get_patents(self, patents: list[str]):
@@ -115,6 +115,7 @@ class LexMachinaClient(BaseRequest):
     async def list(self, path):
         response = await self.get(path=path)
         return response
+
     async def health(self):
         response = await self.get(path="health")
         return response
