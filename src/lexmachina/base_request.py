@@ -3,7 +3,7 @@ import json
 import aiohttp
 from aiohttp import ContentTypeError
 
-from lexmachina.auth import Auth
+from .auth import Auth
 
 
 class BaseRequest(Auth):

@@ -1,6 +1,5 @@
 import json
-from typing import Union
-from lexmachina.base_request import BaseRequest
+from .base_request import BaseRequest
 
 
 class LexMachinaClient(BaseRequest):
