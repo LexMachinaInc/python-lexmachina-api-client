@@ -17,7 +17,7 @@ class BaseRequest(Auth):
                 else:
                     url = f"https://api.lexmachina.com/{version}/{path}/{args}"
                 async with session.get(url, headers=headers,
-                                    params=params) as response:
+                                       params=params) as response:
                     return await response.json()
         except ContentTypeError:
             return await response.text()
