@@ -17,3 +17,8 @@ class TestGetAttorneys:
     async def test_get_attorney_positive(self, attorney_id):
         response = await self.client.get_attorneys(attorneys=attorney_id)
         assert response['attorneyId'] == attorney_id
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize("q", ["Justin"])
+    async def test_search_attorney_positive(self, q):
+        response = await self.client.search_attorneys(q=q)
+        assert any(i['name'] == 'Justin M. Brownstone' for i in response['attorneys'])

@@ -9,7 +9,7 @@ class LexMachinaClient(BaseRequest):
         self.client_id = client_id
         self.client_secret = client_secret
 
-    async def get_district_cases(self, cases: str):
+    async def get_district_cases(self, cases: int):
         response = await self.get(path='district-cases', args=cases)
         return response
 
@@ -31,7 +31,7 @@ class LexMachinaClient(BaseRequest):
                                                                  "pageSize": page_size})
         return response
 
-    async def get_attorneys(self, attorneys: list[str]):
+    async def get_attorneys(self, attorneys: list[int]):
         if isinstance(attorneys, list):
             response = await self.get(path='attorneys', params={"attorneyIds": attorneys})
             return response
@@ -45,7 +45,7 @@ class LexMachinaClient(BaseRequest):
                                                                    "pageSize": page_size})
         return response
 
-    async def get_law_firms(self, law_firms: list[str]):
+    async def get_law_firms(self, law_firms: list[int]):
         if isinstance(law_firms, list):
             response = await self.get(path='law-firms', params={"lawFirmIds": law_firms})
             return response
@@ -59,7 +59,7 @@ class LexMachinaClient(BaseRequest):
                                                                    "pageSize": page_size})
         return response
 
-    async def get_federal_judges(self, federal_judges: list[str]):
+    async def get_federal_judges(self, federal_judges: list[int]):
         if isinstance(federal_judges, list):
             response = await self.get(path='federal-judges', params={"judgeIds": federal_judges})
             return response
@@ -108,7 +108,7 @@ class LexMachinaClient(BaseRequest):
         return response
 
     async def list_judgment_sources(self):
-        response = await self.list(path='list-judgment_sources')
+        response = await self.list(path='list-judgment-sources')
         return response
 
     async def list(self, path):
