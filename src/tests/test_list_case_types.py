@@ -7,7 +7,7 @@ class TestListCaseTags:
     client = LexMachinaClient("config.ini")
 
     @pytest.mark.asyncio
-    async def test_get_case_types(self):
+    async def test_list_case_types(self):
         response = await self.client.list_case_types()
         assert "Bankruptcy" in response
         assert "Tax" in response
