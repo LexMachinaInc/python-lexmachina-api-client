@@ -9,6 +9,6 @@ class TestListCaseResolutions:
     @pytest.mark.asyncio
     async def test_list_case_resolutions(self):
         response = await self.client.list_case_resolutions()
-        assert any(i['summary'] == 'Claimant Win' for i in response)
-        assert any(i['specific'] == 'Trial' for i in response)
-        assert any(i['summary'] == 'Procedural' for i in response)
+        assert any(case['summary'] == 'Claimant Win' for case in response)
+        assert any(case['specific'] == 'Trial' for case in response)
+        assert any(case['summary'] == 'Procedural' for case in response)

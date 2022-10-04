@@ -9,6 +9,6 @@ class TestListCourts:
     @pytest.mark.asyncio
     async def test_list_courts(self):
         response = await self.client.list_courts()
-        assert any(i['type'] == 'FederalDistrict' for i in response)
-        assert any(i['name'] == 'U.S. District Court for the District of Oregon' for i in response)
-        assert any(i['abbreviation'] == 'ohsd' for i in response)
+        assert any(court['type'] == 'FederalDistrict' for court in response)
+        assert any(court['name'] == 'U.S. District Court for the District of Oregon' for court in response)
+        assert any(court['abbreviation'] == 'ohsd' for court in response)
