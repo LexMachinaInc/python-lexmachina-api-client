@@ -14,6 +14,12 @@ class TestGetLawFirms:
         assert response.get("detail") == "No law firm matching provided law firm ID was found"
 
     @pytest.mark.asyncio
+    @pytest.mark.parametrize("law_firms", [INTEGER_FUZZ])
+    async def test_get_law_firms_integer_fuzz(self, law_firms):
+        response = await self.client.get_law_firms(law_firms=law_firms)
+        assert response.get("detail") == "No law firms matching provided law firm IDs were found"
+
+    @pytest.mark.asyncio
     @pytest.mark.parametrize("law_firms", [920, 604, 10239533])
     async def test_get_law_firms_positive(self, law_firms):
         response = await self.client.get_law_firms(law_firms=law_firms)

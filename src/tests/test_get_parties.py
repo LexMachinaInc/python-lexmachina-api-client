@@ -14,6 +14,12 @@ class TestGetParties:
         assert response.get("detail") == "No party matching provided party ID was found"
 
     @pytest.mark.asyncio
+    @pytest.mark.parametrize("parties", [INTEGER_FUZZ])
+    async def test_get_parties_integer_fuzz(self, parties):
+        response = await self.client.get_parties(parties=parties)
+        assert response.get("detail") == "No parties matching provided party IDs were found"
+
+    @pytest.mark.asyncio
     @pytest.mark.parametrize("parties", [2273, 58589403, 73224])
     async def test_get_parties_positive(self, parties):
         response = await self.client.get_parties(parties=parties)
