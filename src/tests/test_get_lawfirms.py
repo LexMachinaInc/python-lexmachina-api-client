@@ -1,5 +1,6 @@
 import pytest
 
+from . import INTEGER_FUZZ
 from src.lexmachina.client import LexMachinaClient
 
 
@@ -7,7 +8,7 @@ class TestGetLawFirms:
     client = LexMachinaClient("config.ini")
 
     @pytest.mark.asyncio
-    @pytest.mark.parametrize("law_firms", [0, -2, 999999999])
+    @pytest.mark.parametrize("law_firms", INTEGER_FUZZ)
     async def test_get_law_firms_integer_fuzz(self, law_firms):
         response = await self.client.get_law_firms(law_firms=law_firms)
         assert response.get("detail") == "No law firm matching provided law firm ID was found"

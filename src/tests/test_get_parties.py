@@ -1,5 +1,6 @@
 import pytest
 
+from . import INTEGER_FUZZ
 from src.lexmachina.client import LexMachinaClient
 
 
@@ -7,7 +8,7 @@ class TestGetParties:
     client = LexMachinaClient("config.ini")
 
     @pytest.mark.asyncio
-    @pytest.mark.parametrize("parties", [0, -2, 999999999])
+    @pytest.mark.parametrize("parties", INTEGER_FUZZ)
     async def test_get_parties_integer_fuzz(self, parties):
         response = await self.client.get_parties(parties=parties)
         assert response.get("detail") == "No party matching provided party ID was found"

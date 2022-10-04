@@ -1,13 +1,12 @@
 import pytest
 
 from src.lexmachina.client import LexMachinaClient
-
-
+from . import INTEGER_FUZZ
 class TestGetAttorneys:
     client = LexMachinaClient("config.ini")
 
     @pytest.mark.asyncio
-    @pytest.mark.parametrize("attorney_id", [0, -2, 999999999])
+    @pytest.mark.parametrize("attorney_id", INTEGER_FUZZ)
     async def test_get_attorney_integer_fuzz(self, attorney_id):
         response = await self.client.get_attorneys(attorneys=attorney_id)
         assert response.get("detail") == "No attorney matching provided attorney ID was found"

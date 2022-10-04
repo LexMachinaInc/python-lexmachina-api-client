@@ -1,5 +1,6 @@
 import pytest
 
+from . import INTEGER_FUZZ
 from src.lexmachina.client import LexMachinaClient
 
 
@@ -8,7 +9,7 @@ class TestGetDistrictCase:
 
 
     @pytest.mark.asyncio
-    @pytest.mark.parametrize("cases", [0, -2, 999999999])
+    @pytest.mark.parametrize("cases", INTEGER_FUZZ)
     async def test_get_district_case_integer_fuzz(self, cases):
 
         response = await self.client.get_district_cases(cases=cases)

@@ -1,5 +1,6 @@
 import pytest
 
+from . import INTEGER_FUZZ
 from src.lexmachina.client import LexMachinaClient
 
 
@@ -7,7 +8,7 @@ class TestGetPatents:
     client = LexMachinaClient("config.ini")
 
     @pytest.mark.asyncio
-    @pytest.mark.parametrize("patents", [0, -2, 999999999])
+    @pytest.mark.parametrize("patents", INTEGER_FUZZ)
     async def test_get_patents_integer_fuzz(self, patents):
         response = await self.client.get_patents(patents=patents)
         assert response.get("detail") == "No patent matching provided patent number was found"
