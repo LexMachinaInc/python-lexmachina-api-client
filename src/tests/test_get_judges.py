@@ -1,16 +1,25 @@
 import pytest
+import json
 
-from . import INTEGER_FUZZ
 from src.lexmachina.client import LexMachinaClient
-
+from configparser import ConfigParser
 class TestGetJudges:
     client = LexMachinaClient("config.ini")
+    config = ConfigParser()
+    config.read("config.ini")
+    INTEGER_FUZZ = json.loads(config.get("CONSTANTS", "INTEGER_FUZZ"))
 
     @pytest.mark.asyncio
     @pytest.mark.parametrize("federal_judges", INTEGER_FUZZ)
     async def test_get_federal_judges_integer_fuzz(self, federal_judges):
         response = await self.client.get_federal_judges(federal_judges=federal_judges)
         assert response.get("detail") == "No judges matching provided judge IDs were found"
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize("federal_judges", [INTEGER_FUZZ])
+    async def test_get_federal_judges_integer_list_fuzz(self, federal_judges):
+        response = await self.client.get_federal_judges(federal_judges=federal_judges)
+        assert response.get("detail") == "No judges matching provided judges IDs were found"
 
     @pytest.mark.asyncio
     @pytest.mark.parametrize("magistrate_judges", INTEGER_FUZZ)

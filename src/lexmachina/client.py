@@ -58,7 +58,7 @@ class LexMachinaClient(BaseRequest):
 
     async def get_federal_judges(self, federal_judges: list[int]):
         if isinstance(federal_judges, list):
-            response = await self.get(path='federal-judges', params={"judgeIds": federal_judges})
+            response = await self.get(path='federal-judges', params={"federalJudgeIds": federal_judges})
         else:
             response = await self.get(path='federal-judges', args=federal_judges)
         return response
