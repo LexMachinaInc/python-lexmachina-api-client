@@ -30,6 +30,8 @@ class Auth:
                             return await self.renew_token(config, config_file, session)
                     else:
                         return await self.renew_token(config, config_file, session)
+                else:
+                    raise FileNotFoundError("config.ini file not found, please provide path to file")
             else:
                 async with session.post(self.token_url, headers=self.headers, data={
                     "grant_type": "client_credentials",
