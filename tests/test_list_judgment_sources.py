@@ -7,7 +7,7 @@ class TestListJudmentSources:
     client = LexMachinaClient("config.ini")
 
     @pytest.mark.asyncio
-    async def test_get_judgment_sources(self):
+    async def test_list_judgment_sources(self):
         response = await self.client.list_judgment_sources()
         assert "No Type Specified" in response['damages']
         assert "Consent Judgment" in response['remedies']

@@ -1,11 +1,14 @@
+import json
+from configparser import ConfigParser
+
 import pytest
 
-from . import INTEGER_FUZZ
 from src.lexmachina.client import LexMachinaClient
-
-
 class TestGetPatents:
     client = LexMachinaClient("config.ini")
+    config = ConfigParser()
+    config.read("config.ini")
+    INTEGER_FUZZ = json.loads(config.get("CONSTANTS", "INTEGER_FUZZ"))
 
     @pytest.mark.asyncio
     @pytest.mark.parametrize("patents", INTEGER_FUZZ)

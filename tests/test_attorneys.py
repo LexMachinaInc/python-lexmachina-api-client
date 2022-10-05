@@ -1,8 +1,9 @@
-import pytest
 import json
+from configparser import ConfigParser
+
+import pytest
 
 from src.lexmachina.client import LexMachinaClient
-from configparser import ConfigParser
 
 
 class TestGetAttorneys:

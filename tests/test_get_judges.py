@@ -1,8 +1,10 @@
-import pytest
+from configparser import ConfigParser
 import json
 
+import pytest
+
 from src.lexmachina.client import LexMachinaClient
-from configparser import ConfigParser
+
 class TestGetJudges:
     client = LexMachinaClient("config.ini")
     config = ConfigParser()
