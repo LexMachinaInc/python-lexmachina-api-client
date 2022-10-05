@@ -22,16 +22,17 @@ class Auth:
             if self.client_id is None and self.client_secret is None:
                 if config_file.is_file():
                     config.read(config_file)
-                    if config.has_section("TOKEN") and config.get("TOKEN", "ACCESS_TOKEN") != '':
-                        now = datetime.utcnow().timestamp()
-                        if not now - float(config.get("TOKEN", "ISSUED_AT")) >= 3599:
-                            return config.get("TOKEN", "ACCESS_TOKEN")
-                        else:
-                            return await self.renew_token(config, config_file, session)
-                    else:
-                        return await self.renew_token(config, config_file, session)
                 else:
                     raise FileNotFoundError("config.ini file not found, please provide path to file")
+                if config.has_section("TOKEN") and config.get("TOKEN", "ACCESS_TOKEN") != '':
+                    now = datetime.utcnow().timestamp()
+                else:
+                    return await self.renew_token(config, config_file, session)
+
+                if not now - float(config.get("TOKEN", "ISSUED_AT")) >= 3599:
+                    return config.get("TOKEN", "ACCESS_TOKEN")
+                else:
+                    return await self.renew_token(config, config_file, session)
             else:
                 async with session.post(self.token_url, headers=self.headers, data={
                     "grant_type": "client_credentials",
