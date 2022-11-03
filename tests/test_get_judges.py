@@ -10,19 +10,31 @@ class TestGetJudges:
     config = ConfigParser()
     config.read("config.ini")
     INTEGER_FUZZ = json.loads(config.get("CONSTANTS", "INTEGER_FUZZ"))
+    INVALID_IDS = json.loads(config.get("CONSTANTS", "INVALID_IDS"))
+    VALID_IDS = json.loads(config.get("CONSTANTS", "VALID_IDS"))
 
     @pytest.mark.asyncio
-    @pytest.mark.parametrize("federal_judges", INTEGER_FUZZ)
-    async def test_get_federal_judges_integer_fuzz(self, federal_judges):
+    @pytest.mark.parametrize("federal_judges", INVALID_IDS)
+    async def test_get_federal_judges_integer_invalid(self, federal_judges):
         response = await self.client.get_federal_judges(federal_judges=federal_judges)
-        assert response.get("detail") == "No judges matching provided judge IDs were found"
+        assert response.get("detail") == "Invalid judge ID"
 
     @pytest.mark.asyncio
-    @pytest.mark.parametrize("federal_judges", [INTEGER_FUZZ])
-    async def test_get_federal_judges_integer_list_fuzz(self, federal_judges):
+    @pytest.mark.parametrize("federal_judges", VALID_IDS)
+    async def test_get_federal_judges_integer_not_found(self, federal_judges):
+        response = await self.client.get_federal_judges(federal_judges=federal_judges)
+        assert response.get("detail") == "No judge matching provided judge ID was found"
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize("federal_judges", [INVALID_IDS])
+    async def test_get_federal_judges_integer_list_invalid(self, federal_judges):
+        response = await self.client.get_federal_judges(federal_judges=federal_judges)
+        assert response.get("detail") == "Invalid judge IDs"
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize("federal_judges", [VALID_IDS])
+    async def test_get_federal_judges_integer_list_not_found(self, federal_judges):
         response = await self.client.get_federal_judges(federal_judges=federal_judges)
         assert response.get("detail") == "No judges matching provided judges IDs were found"
-
     @pytest.mark.asyncio
     @pytest.mark.parametrize("magistrate_judges", INTEGER_FUZZ)
     async def test_get_magistrate_judges_integer_fuzz(self, magistrate_judges):
