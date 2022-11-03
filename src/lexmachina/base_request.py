@@ -26,7 +26,8 @@ class BaseRequest(Auth):
         async with aiohttp.ClientSession() as session:
             token = await self.get_token()
             headers = {"Authorization": f"Bearer {token}"}
+            url = f"https://api.lexmachina.com/{version}/{path}"
             async with session.post(
-                    f"https://api.lexmachina.com/{version}/{path}", headers=headers, data=json.dumps(data)
+                   url, headers=headers, json=data
             ) as response:
                 return await response.json()

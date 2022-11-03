@@ -1,4 +1,3 @@
-import json
 from .base_request import BaseRequest
 
 
@@ -14,7 +13,7 @@ class LexMachinaClient(BaseRequest):
         return response
 
     async def query_district_cases(self, data: dict):
-        response = await self.post(path='query-district-cases', data=json.dumps(data))
+        response = await self.post(path='query-district-cases', data=data)
         return response
 
     async def get_parties(self, parties: list[str]):
