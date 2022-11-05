@@ -3,7 +3,7 @@ import pytest
 from src.lexmachina.client import LexMachinaClient
 
 
-class TestGetPatents:
+class TestHealth:
     client = LexMachinaClient("config.ini")
 
     @pytest.mark.asyncio

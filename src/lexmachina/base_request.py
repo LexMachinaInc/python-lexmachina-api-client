@@ -27,7 +27,11 @@ class BaseRequest(Auth):
             token = await self.get_token()
             headers = {"Authorization": f"Bearer {token}"}
             url = f"https://api.lexmachina.com/{version}/{path}"
-            async with session.post(
-                   url, headers=headers, json=data
-            ) as response:
-                return await response.json()
+            try:
+
+                async with session.post(
+                    url, headers=headers, json=data
+                ) as response:
+                    return await response.json()
+            except ContentTypeError:
+                return await response.text()
