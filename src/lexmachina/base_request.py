@@ -11,7 +11,7 @@ class BaseRequest(Auth):
         try:
             async with aiohttp.ClientSession() as session:
                 token = await self.get_token()
-                headers = {"Authorization": f"Bearer {token}"}
+                headers = {"Authorization": f"Bearer {token}", "User-Agent": "lexmachina-0.0.1"}
                 if args is None:
                     url = f"https://api.lexmachina.com/{version}/{path}"
                 else:
@@ -25,7 +25,7 @@ class BaseRequest(Auth):
     async def post(self, version: str = "beta", path=None, data=None):
         async with aiohttp.ClientSession() as session:
             token = await self.get_token()
-            headers = {"Authorization": f"Bearer {token}"}
+            headers = {"Authorization": f"Bearer {token}", "User-Agent": "lexmachina-0.0.1"}
             url = f"https://api.lexmachina.com/{version}/{path}"
             try:
 
